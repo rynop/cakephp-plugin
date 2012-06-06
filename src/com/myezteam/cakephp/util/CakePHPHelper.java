@@ -10,6 +10,8 @@
  */
 package com.myezteam.cakephp.util;
 
+import java.io.ByteArrayInputStream;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -104,6 +106,7 @@ public abstract class CakePHPHelper
         {
           return file;
         }
+        break;
       }
     }
     // never return 'null', use file.exists() to check exists
@@ -436,13 +439,14 @@ public abstract class CakePHPHelper
     {
       if (destinationFile != null)
       {
+        // TODO: prompt to create the file
+        if (!destinationFile.exists())
+        {
+          destinationFile.create(new ByteArrayInputStream(new byte[0]), false, null);
+        }
         if (destinationFile.exists())
         {
           IDE.openEditor(page, destinationFile);
-        }
-        else
-        {
-          // TODO: prompt to create it?
         }
       }
     }

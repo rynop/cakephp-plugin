@@ -55,18 +55,7 @@ public class OpenCakeModelHandler extends AbstractHandler
       {
         destinationFile = CakePHPHelper.getModelFromView(selectedFile);
       }
-      try
-      {
-        if (destinationFile != null && destinationFile.exists())
-        {
-          IDE.openEditor(page, destinationFile);
-        }
-      } catch (CoreException e)
-      {
-        String clazz = destinationFile.getName();
-        System.err.println("OpenCakeFile can not open file: " + clazz);
-        e.printStackTrace();
-      }
+      CakePHPHelper.openFile(page, destinationFile);
     }
     return null;
   }

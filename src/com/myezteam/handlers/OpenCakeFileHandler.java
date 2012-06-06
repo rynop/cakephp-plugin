@@ -47,7 +47,6 @@ public class OpenCakeFileHandler extends AbstractHandler
 
       if (CakePHPHelper.isModel(selectedFile))
       {
-        // TODO: implement pop-up
         destinationFile = CakePHPHelper.getControllerFromModel(selectedFile);
       }
       else if (CakePHPHelper.isController(selectedFile))
@@ -56,7 +55,7 @@ public class OpenCakeFileHandler extends AbstractHandler
         {
           destinationFile = CakePHPHelper.getViewFromAction(selectedFile, selectedText);
         }
-        if ((destinationFile == null) || !destinationFile.exists())
+        if (destinationFile == null)
         {
           destinationFile = CakePHPHelper.getModelFromController(selectedFile);
         }
@@ -69,18 +68,7 @@ public class OpenCakeFileHandler extends AbstractHandler
       {
         destinationFile = CakePHPHelper.getViewFromJSFile(selectedFile);
       }
-      try
-      {
-        if (destinationFile != null && destinationFile.exists())
-        {
-          IDE.openEditor(page, destinationFile);
-        }
-      } catch (CoreException e)
-      {
-        String clazz = destinationFile.getName();
-        System.err.println("OpenCakeFile can not open file: " + clazz);
-        e.printStackTrace();
-      }
+      CakePHPHelper.openFile(page, destinationFile);
     }
     return null;
   }
