@@ -1,0 +1,88 @@
+/**
+ * OpenCakeFileHandler.java
+ * cakephp-plugin
+ * 
+ * Created by jeremy on Jun 4, 2012
+ * DoApp, Inc. owns and reserves all rights to the intellectual
+ * property and design of the following application.
+ *
+ * Copyright 2012 - All rights reserved.  Created by DoApp, Inc.
+ */
+package com.myezteam.handlers;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+
+import com.myezteam.cakephp.util.CakePHPHelper;
+import com.myezteam.cakephp.util.Inflector;
+
+/**
+ * @author jeremy
+ * 
+ */
+public class OpenCakeFileHandler extends AbstractHandler
+{
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.
+   * ExecutionEvent)
+   */
+  @Override
+  public Object execute(ExecutionEvent executionEvent) throws ExecutionException
+  {
+    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    String selectedText = CakePHPHelper.getSelectedText(page);
+    IFile selectedFile = CakePHPHelper.getSelectedFile(page);
+    if (selectedFile != null)
+    {
+      IFile destinationFile = null;
+
+      if (CakePHPHelper.isModel(selectedFile))
+      {
+        // TODO: implement pop-up
+        destinationFile = CakePHPHelper.getControllerFromModel(selectedFile);
+      }
+      else if (CakePHPHelper.isController(selectedFile))
+      {
+        if (selectedText != null)
+        {
+          destinationFile = CakePHPHelper.getViewFromAction(selectedFile, selectedText);
+        }
+        if ((destinationFile == null) || !destinationFile.exists())
+        {
+          destinationFile = CakePHPHelper.getModelFromController(selectedFile);
+        }
+      }
+      else if (CakePHPHelper.isView(selectedFile))
+      {
+        destinationFile = CakePHPHelper.getJSFileFromView(selectedFile);
+      }
+      else if (CakePHPHelper.isJSFile(selectedFile))
+      {
+        destinationFile = CakePHPHelper.getViewFromJSFile(selectedFile);
+      }
+      try
+      {
+        if (destinationFile != null && destinationFile.exists())
+        {
+          IDE.openEditor(page, destinationFile);
+        }
+      } catch (CoreException e)
+      {
+        String clazz = destinationFile.getName();
+        System.err.println("OpenCakeFile can not open file: " + clazz);
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
+}

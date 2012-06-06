@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+  <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.php.ui.explorer">
+      <!-- <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer"> -->
+      
+         <command
+               commandId="com.myezteam.cakephp.commands.Switch"
+               label="Switch"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.myezteam.cakephp.commands.Switch"
+            id="com.myezteam.cakephp.commands.Switch"
+            name="Switch">
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+    <category name="CakePHP" id="com.myezteam.commands.opencakefile"></category>
+    <command name="Open Cake File" categoryId="com.myezteam.commands.opencakefile" id="com.myezteam.commands.OpenCakeFile"></command>
+    <command name="Open Cake Model" categoryId="com.myezteam.commands.opencakefile" id="com.myezteam.commands.OpenCakeModel"></command>
+    <command name="Open Cake Model" categoryId="com.myezteam.commands.opencakefile" id="com.myezteam.commands.OpenCakeController"></command>
+    <command name="Open Cake JS" categoryId="com.myezteam.commands.opencakefile" id="com.myezteam.commands.OpenCakeJSFile"></command>
+   </extension>
+   
+  <extension point="org.eclipse.ui.handlers">
+    <handler commandId="com.myezteam.commands.OpenCakeFile" class="com.myezteam.handlers.OpenCakeFileHandler"></handler>
+    <handler commandId="com.myezteam.commands.OpenCakeModel" class="com.myezteam.handlers.OpenCakeModelHandler"></handler>
+    <handler commandId="com.myezteam.commands.OpenCakeController" class="com.myezteam.handlers.OpenCakeControllerHandler"></handler>
+    <handler commandId="com.myezteam.commands.OpenCakeJSFile" class="com.myezteam.handlers.OpenCakeJSFileHandler"></handler>
+  </extension>
+  
+<extension point="org.eclipse.ui.bindings">
+    <key
+      commandId="com.myezteam.commands.OpenCakeFile"
+      contextId="org.eclipse.ui.contexts.window" sequence="Ctrl+Shift+;"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+    </key>
+    <key
+      commandId="com.myezteam.commands.OpenCakeModel"
+      contextId="org.eclipse.ui.contexts.window"
+      sequence="Ctrl+Shift+M"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+    </key>
+    <key
+      commandId="com.myezteam.commands.OpenCakeController"
+      contextId="org.eclipse.ui.contexts.window"
+      sequence="Ctrl+Shift+C"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+    </key>
+    <key
+      commandId="com.myezteam.commands.OpenCakeJSFile"
+      contextId="org.eclipse.ui.contexts.window"
+      sequence="Ctrl+Shift+J"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+    </key>
+  </extension>
+  
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Sample Action Set"
+            visible="true"
+            id="com.myezteam.cakephp.actionSet">
+         <menu
+               label="Sample &amp;Menu"
+               id="sampleMenu">
+            <separator
+                  name="sampleGroup">
+            </separator>
+         </menu>
+         <action
+               label="&amp;Sample Action"
+               icon="icons/sample.gif"
+               class="com.myezteam.cakephp.actions.SampleAction"
+               tooltip="Hello, Eclipse world"
+               menubarPath="sampleMenu/sampleGroup"
+               toolbarPath="sampleGroup"
+               id="com.myezteam.cakephp.actions.SampleAction">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="com.myezteam.cakephp.contribution1"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="com.myezteam.cakephp.menu1"
+               label="CakePHP"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="com.myezteam.cakephp.popup.actions.OpenModel"
+               enablesFor="1"
+               id="com.myezteam.cakephp.newAction"
+               label="Model"
+               menubarPath="com.myezteam.cakephp.menu1/group1">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

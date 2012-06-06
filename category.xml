@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.myezteam.cakephp.feature_1.0.0.qualifier.jar" id="com.myezteam.cakephp.feature" version="1.0.0.qualifier">
+      <category name="com.myezteam.cakephp"/>
+   </feature>
+   <category-def name="com.myezteam.cakephp" label="CakePHP">
+      <description>
+         A cakePHP feature to easily switch between the different components of your CakePHP project.
+      </description>
+   </category-def>
+</site>
