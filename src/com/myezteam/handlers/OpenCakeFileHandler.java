@@ -41,6 +41,7 @@ public class OpenCakeFileHandler extends AbstractHandler
     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
     String selectedText = CakePHPHelper.getSelectedText(page);
     IFile selectedFile = CakePHPHelper.getSelectedFile(page);
+    byte[] initialContents = new byte[0];
     if (selectedFile != null)
     {
       IFile destinationFile = null;
@@ -48,6 +49,7 @@ public class OpenCakeFileHandler extends AbstractHandler
       if (CakePHPHelper.isModel(selectedFile))
       {
         destinationFile = CakePHPHelper.getControllerFromModel(selectedFile);
+        initialContents = CakePHPHelper.getInitialControllerContents(selectedFile);
       }
       else if (CakePHPHelper.isController(selectedFile))
       {
@@ -63,12 +65,13 @@ public class OpenCakeFileHandler extends AbstractHandler
       else if (CakePHPHelper.isView(selectedFile))
       {
         destinationFile = CakePHPHelper.getJSFileFromView(selectedFile);
+        initialContents = CakePHPHelper.getInitialJSContents();
       }
       else if (CakePHPHelper.isJSFile(selectedFile))
       {
         destinationFile = CakePHPHelper.getViewFromJSFile(selectedFile);
       }
-      CakePHPHelper.openFile(page, destinationFile);
+      CakePHPHelper.openFile(page, destinationFile, initialContents);
     }
     return null;
   }

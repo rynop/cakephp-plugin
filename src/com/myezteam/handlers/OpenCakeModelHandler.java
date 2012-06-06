@@ -55,7 +55,7 @@ public class OpenCakeModelHandler extends AbstractHandler
       {
         destinationFile = CakePHPHelper.getModelFromView(selectedFile);
       }
-      CakePHPHelper.openFile(page, destinationFile);
+      CakePHPHelper.openFile(page, destinationFile, new byte[0]);
     }
     return null;
   }

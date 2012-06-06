@@ -313,8 +313,8 @@ public abstract class CakePHPHelper
   {
     return modelFilePath.removeLastSegments(2);
   }
-
-  public static IFile getControllerFromModel(IFile modelFile)
+  
+  public static String getModelNamePlural(IFile modelFile)
   {
     IPath modelFilePath = modelFile.getProjectRelativePath();
     String modelFilename = modelFilePath.lastSegment();
@@ -322,6 +322,19 @@ public abstract class CakePHPHelper
       return null;
     String singular = modelFilename.substring(0, modelFilename.indexOf('.'));
     String plural = Inflector.pluralize(singular);
+    return plural;
+  }
+
+  public static IFile getControllerFromModel(IFile modelFile)
+  {
+    IPath modelFilePath = modelFile.getProjectRelativePath();
+//    String modelFilename = modelFilePath.lastSegment();
+//    if (!CakePHPHelper.isModel(modelFile))
+//      return null;
+//    String singular = modelFilename.substring(0, modelFilename.indexOf('.'));
+//    String plural = Inflector.pluralize(singular);
+    
+    String plural = getModelNamePlural(modelFile);
 
     String controllerName = plural + CONTROLLER_FILE_SUFFIX;
     IPath controllerPath = getAppFolderFromModel(modelFilePath).append(CONTROLLERS).append(controllerName);
@@ -433,16 +446,22 @@ public abstract class CakePHPHelper
     return getPreferenceViewFile(selectedFile.getProject(), viewPath, view);
   }
 
-  public static void openFile(IWorkbenchPage page, IFile destinationFile)
+  public static void openFile(IWorkbenchPage page, IFile destinationFile, byte[] initialContent)
   {
     try
     {
       if (destinationFile != null)
       {
-        // TODO: prompt to create the file
+        // TODO: prompt to create the file ?  I say no, why would you try the shortcut if you didn't want it created
         if (!destinationFile.exists())
         {
-          destinationFile.create(new ByteArrayInputStream(new byte[0]), false, null);
+          IPath fullPath = destinationFile.getLocation();
+          if (fullPath.toFile().getParentFile().mkdirs())
+          {
+            // create Eclipse resource so that the create file doesn't blow chunks
+            destinationFile.getProject().getFile(destinationFile.getParent().getProjectRelativePath()).refreshLocal(IFile.DEPTH_ZERO, null);
+          }
+          destinationFile.create(new ByteArrayInputStream(initialContent), false, null);
         }
         if (destinationFile.exists())
         {
@@ -456,5 +475,16 @@ public abstract class CakePHPHelper
       System.err.println("OpenCakeFile can not open file: " + clazz);
       e.printStackTrace();
     }
+  }
+
+  public static byte[] getInitialJSContents()
+  {
+    return new String("$(function() {\n\n\n});\n").getBytes();
+  }
+  
+  public static byte[] getInitialControllerContents(IFile modelFile)
+  {
+    String modelPlural = getModelNamePlural(modelFile);
+    return new String("<?php\nclass " + modelPlural + CONTROLLERS + " extends AppController\n{\n  public $name = '" + modelPlural + "';\n  public $uses = array();\n\n\n}\n?>").getBytes();
   }
 }

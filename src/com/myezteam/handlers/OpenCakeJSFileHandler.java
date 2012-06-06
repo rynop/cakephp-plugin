@@ -53,7 +53,7 @@ public class OpenCakeJSFileHandler extends AbstractHandler
       {
         destinationFile = CakePHPHelper.getJSFileFromView(selectedFile);
       }
-      CakePHPHelper.openFile(page, destinationFile);
+      CakePHPHelper.openFile(page, destinationFile, new byte[0]);
     }
     return null;
   }
