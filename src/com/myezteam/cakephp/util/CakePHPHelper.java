@@ -394,7 +394,7 @@ public abstract class CakePHPHelper
     {
       return null;
     }
-    String modelName = Inflector.singularize(viewPath.segment(segmentCount - 2));
+    String modelName = viewPath.segment(segmentCount - 2);
     String[] split = viewPath.lastSegment().split("\\.");
     String viewName = split[0];
     
